@@ -28,7 +28,10 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(csrf -> csrf.disable())
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+
+                .headers(headers -> headers.frameOptions(frame -> frame.disable()))
+
+                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         // Públicos por padrão no Boilerplate
                         .requestMatchers(HttpMethod.POST, "/auth/login", "/auth/register").permitAll()
@@ -37,6 +40,12 @@ public class SecurityConfig {
 
                         // Exemplo de como deixar Webhooks genéricos
                         .requestMatchers("/webhooks/**").permitAll()
+
+                        // ADICIONE ESTA LINHA: Libera o banco de dados visual
+                        .requestMatchers("/h2-console", "/h2-console/", "/h2-console/**").permitAll()
+
+                        // TESTE: Se quiser testar o findall sem token agora, libere temporariamente:
+                        .requestMatchers("/usuarios/**").permitAll()
 
                         // Resto exige ADMIN (Configuração padrão de segurança)
                         .requestMatchers("/admin/**").hasRole("ADMIN")

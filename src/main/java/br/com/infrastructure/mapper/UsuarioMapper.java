@@ -17,12 +17,15 @@ public interface UsuarioMapper {
 
     @Mapping(target = "pessoa.cpf", source = "cpf")
     @Mapping(target = "pessoa.email", source = "email")
+    @Mapping(target = "senha", source = "senha") // A senha será codificada no Service
     Usuario toEntity(UsuarioCadastroDTO dto);
 
-    // Converte a página de entidades para página de DTOs automaticamente
+    @Mapping(target = "cpf", source = "pessoa.cpf")
+    @Mapping(target = "email", source = "pessoa.email")
+    @Mapping(target = "perfis", source = "perfis") // ajuste o nome do campo da entidade
+    UsuarioListagemDTO toListagemDto(Usuario usuario);
+
     default Page<UsuarioListagemDTO> toPageDto(Page<Usuario> page) {
         return page.map(this::toListagemDto);
     }
-
-    UsuarioListagemDTO toListagemDto(Usuario usuario);
 }

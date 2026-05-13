@@ -1,0 +1,23 @@
+{
+  "properties": [
+    {
+      "name": "spring.h2.console.path",
+      "type": "java.lang.String",
+      "description": "Description for spring.h2.console.path."
+    },
+    {
+      "name": "spring.h2.console.enabled",
+      "type": "java.lang.String",
+      "description": "Description for spring.h2.console.enabled."
+    },
+    {
+      "name": "spring.flyway.enabled",
+      "type": "java.lang.String",
+      "description": "Description for spring.flyway.enabled."
+    },
+    {
+      "name": "spring.h2.console.settings.web-allow-others",
+      "type": "java.lang.String",
+      "description": "Description for spring.h2.console.settings.web-allow-others."
+    }
+  ] }

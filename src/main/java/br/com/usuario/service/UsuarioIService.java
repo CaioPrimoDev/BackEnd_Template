@@ -1,6 +1,5 @@
 package br.com.usuario.service;
 
-import br.com.usuario.dto.UsuarioCadastroDTO;
 import br.com.usuario.dto.UsuarioResponseDTO;
 import br.com.usuario.entity.Usuario;
 import org.springframework.data.domain.Page;
@@ -8,7 +7,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface UsuarioIService {
-    Usuario save(UsuarioCadastroDTO dto);
+    Usuario save(Usuario usuario);
     Usuario findByEmail(String email);
     Usuario findByCpf(String cpf);
     Page<Usuario> findAll(Pageable pageable);

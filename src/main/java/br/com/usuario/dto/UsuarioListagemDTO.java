@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -13,6 +15,6 @@ public class UsuarioListagemDTO {
     private String cpf;
     private String email;
     private Boolean status;
-    private PerfilUsuario perfil;
+    private Set<PerfilUsuario> perfis;
     //private LocalDateTime dataCadastro;
 }

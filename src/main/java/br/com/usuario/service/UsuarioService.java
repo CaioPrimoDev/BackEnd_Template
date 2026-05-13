@@ -2,9 +2,7 @@ package br.com.usuario.service;
 
 
 import br.com.infrastructure.exception.BusinessException;
-import br.com.pessoa.entity.Pessoa;
 import br.com.pessoa.repository.PessoaRepository;
-import br.com.usuario.dto.UsuarioCadastroDTO;
 import br.com.usuario.dto.UsuarioResponseDTO;
 import br.com.usuario.entity.PerfilUsuario;
 import br.com.usuario.entity.Usuario;
@@ -31,33 +29,26 @@ public class UsuarioService implements UsuarioIService {
 
     @Override
     @Transactional
-    public Usuario save(UsuarioCadastroDTO dto) {
-        log.info("Iniciando cadastro de usuário para o email: {}", dto.getEmail());
+    public Usuario save(Usuario usuario) {
+        String email = usuario.getPessoa().getEmail();
+        String cpf = usuario.getPessoa().getCpf();
 
-        if (usuarioRepository.findByPessoa_Cpf(dto.getCpf()).isPresent()) {
-            throw new BusinessException("CPF já cadastrado no sistema.");
+        log.info("Iniciando persistência de usuário: {}", email);
+
+        if (usuarioRepository.findByPessoa_Cpf(cpf).isPresent()) {
+            throw new BusinessException("CPF já cadastrado.");
         }
-        if (usuarioRepository.findByPessoa_Email(dto.getEmail()).isPresent()) {
-            throw new BusinessException("Email já cadastrado no sistema.");
+        if (usuarioRepository.findByPessoa_Email(email).isPresent()) {
+            throw new BusinessException("Email já cadastrado.");
         }
 
-        Pessoa pessoa = Pessoa.builder()
-                .cpf(dto.getCpf())
-                .email(dto.getEmail())
-                .build();
+        // Salva a Pessoa primeiro
+        pessoaRepository.save(usuario.getPessoa());
 
-        // No Spring Boot 3+, o CascadeType.ALL no Usuario já salvaria a Pessoa,
-        // mas salvar explicitamente é mais seguro em alguns casos de auditoria.
-        pessoa = pessoaRepository.save(pessoa);
+        // Codifica a senha antes de salvar
+        usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
+        usuario.setStatus(true);
 
-        Usuario usuario = Usuario.builder()
-                .pessoa(pessoa)
-                .senha(passwordEncoder.encode(dto.getSenha()))
-                .perfis(dto.getPerfis())
-                .status(true)
-                .build();
-
-        log.info("Usuário cadastrado com sucesso!");
         return usuarioRepository.save(usuario);
     }
 

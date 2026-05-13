@@ -10,6 +10,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.time.LocalDateTime;
 import java.util.List; // FALTAVA ESTE
@@ -18,7 +19,7 @@ import java.util.stream.Collectors;
 @RestControllerAdvice
 public class ApiExceptionHandler {
 
-    @Value("${server.error.include-exception:false}")
+    @Value("${app.error.print-stacktrace:false}")
     private boolean printStackTrace;
 
     // 1. Erros de Regra de Negócio (400)
@@ -58,6 +59,16 @@ public class ApiExceptionHandler {
                         HttpStatus.FORBIDDEN.value(),
                         "Acesso Negado",
                         "Você não tem permissão para acessar este recurso."
+                ));
+    }
+
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<ErrorResponse> handleNoResourceFound(NoResourceFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(ErrorResponse.of(
+                        HttpStatus.NOT_FOUND.value(),
+                        "Recurso não encontrado",
+                        "O caminho '" + ex.getResourcePath() + "' não existe."
                 ));
     }
 

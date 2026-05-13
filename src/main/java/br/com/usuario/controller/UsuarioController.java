@@ -21,11 +21,17 @@ import org.springframework.web.bind.annotation.*;
 public class UsuarioController {
 
     private final UsuarioIService usuarioService;
-    private final UsuarioMapper mapper; // Usando o novo Mapper
+    private final UsuarioMapper mapper;
 
     @PostMapping
-    public ResponseEntity<UsuarioResponseDTO> criar(@RequestBody @Valid UsuarioCadastroDTO dto) {
-        Usuario criado = usuarioService.save(dto);
+    public ResponseEntity<UsuarioResponseDTO> save(@RequestBody @Valid UsuarioCadastroDTO dto) {
+        // DTO -> Entity
+        Usuario usuarioEntity = mapper.toEntity(dto);
+
+        // Service trabalha apenas com Entity
+        Usuario criado = usuarioService.save(usuarioEntity);
+
+        // Entity -> DTO de Resposta
         return ResponseEntity.status(HttpStatus.CREATED).body(mapper.toResponseDto(criado));
     }
 
@@ -34,7 +40,7 @@ public class UsuarioController {
         return ResponseEntity.ok(mapper.toResponseDto(usuarioService.findByEmail(email)));
     }
 
-    @GetMapping
+    @GetMapping("/findall")
     public ResponseEntity<Page<UsuarioListagemDTO>> findAll(
             @PageableDefault(sort = "id") Pageable pageable) {
 
