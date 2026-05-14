@@ -67,6 +67,8 @@ public class SecurityConfig {
 
         // Configuração para aceitar Vercel dinâmico e Localhost
         configuration.setAllowedOriginPatterns(List.of(
+                "http://localhost:3000",
+                "http://localhost:8080",
                 "http://localhost:5173",
                 "https://prg04frontend-react.vercel.app",   // URL Principal (Produção)
                 "https://prg04frontend-react-*.vercel.app"  // URL Dinâmica (Previews/Branches)
