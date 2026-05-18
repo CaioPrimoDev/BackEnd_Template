@@ -12,6 +12,7 @@ import java.util.Set;
 @AllArgsConstructor
 public class UsuarioListagemDTO {
     private Long id;
+    private String nome;
     private String cpf;
     private String email;
     private Boolean status;

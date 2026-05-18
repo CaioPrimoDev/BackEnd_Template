@@ -29,6 +29,7 @@ public class TestConfig implements CommandLineRunner {
         if (repository.findAll().stream().noneMatch(u -> "admin@email.com".equals(u.getPessoa().getEmail()))) {
 
             Pessoa pessoa = new Pessoa();
+            pessoa.setNome("Administrador");
             pessoa.setEmail("admin@email.com");
             pessoa.setCpf("1234567890");
             Pessoa pessoaSalva = pessoaRepository.save(pessoa);
@@ -41,7 +42,10 @@ public class TestConfig implements CommandLineRunner {
 
             repository.save(admin);
             System.out.println("----------------------------------------------");
-            System.out.println(">>> USUÁRIO DE TESTE CRIADO: " + pessoa.getEmail() + "/ " + "123456");
+            System.out.println(">>> USUÁRIO DE TESTE CRIADO" +
+                    "\n> " + "Nome: " + pessoa.getNome() +
+                    "\n> " + "Email: " + pessoa.getEmail() +
+                    "\n> " + "Senha: 123456");
             System.out.println("----------------------------------------------");
         }
     }

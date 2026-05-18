@@ -9,6 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -36,6 +37,8 @@ public class Usuario extends PersistenceEntity implements UserDetails {
     @Size(min = 8, message = "A senha deve ter pelo menos 8 caracteres")
     private String senha;
     private Boolean status = true;
+    private LocalDateTime dataCadastro;
+    private LocalDateTime ultimoLogin;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

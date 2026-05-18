@@ -15,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,6 +49,7 @@ public class UsuarioService implements UsuarioIService {
         // Codifica a senha antes de salvar
         usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
         usuario.setStatus(true);
+        usuario.setDataCadastro(LocalDateTime.now());
 
         return usuarioRepository.save(usuario);
     }

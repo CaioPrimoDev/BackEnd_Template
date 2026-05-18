@@ -11,15 +11,18 @@ import org.springframework.data.domain.Page;
 @Mapper(componentModel = "spring")
 public interface UsuarioMapper {
 
+    @Mapping(target = "nome", source = "pessoa.nome")
     @Mapping(target = "cpf", source = "pessoa.cpf")
     @Mapping(target = "email", source = "pessoa.email")
     UsuarioResponseDTO toResponseDto(Usuario usuario);
 
+    @Mapping(target = "pessoa.nome", source = "nome")
     @Mapping(target = "pessoa.cpf", source = "cpf")
     @Mapping(target = "pessoa.email", source = "email")
     @Mapping(target = "senha", source = "senha") // A senha será codificada no Service
     Usuario toEntity(UsuarioCadastroDTO dto);
 
+    @Mapping(target = "nome", source = "pessoa.nome")
     @Mapping(target = "cpf", source = "pessoa.cpf")
     @Mapping(target = "email", source = "pessoa.email")
     @Mapping(target = "perfis", source = "perfis") // ajuste o nome do campo da entidade

@@ -14,6 +14,7 @@ import lombok.*;
 @Setter
 @Table(name = "pessoa")
 public class Pessoa extends PersistenceEntity {
+    private String nome;
     private String cpf;
     private String email;
 }

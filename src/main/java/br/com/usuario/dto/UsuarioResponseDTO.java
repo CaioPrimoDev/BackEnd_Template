@@ -13,6 +13,7 @@ import java.util.Set;
 public class UsuarioResponseDTO {
     // Todos os dados não-sensíveis para exibição completa
     private Long id;
+    private String nome;
     private String cpf;
     private String email;
     private boolean status;
@@ -20,6 +21,7 @@ public class UsuarioResponseDTO {
 
     public UsuarioResponseDTO(Usuario usuario) {
         this.id = usuario.getId();
+        this.nome = usuario.getPessoa().getNome();
         this.cpf = usuario.getPessoa().getCpf();
         this.email = usuario.getPessoa().getEmail();
         this.status = usuario.getStatus(); // ou .getStatus() dependendo do Lombok

@@ -14,6 +14,10 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UsuarioCadastroDTO {
+
+    @NotBlank(message = "Nome é obrigatório")
+    private String nome;
+
     @NotBlank(message = "CPF é obrigatório")
     @CPF(message = "O CPF informado é inválido.")
     private String cpf;

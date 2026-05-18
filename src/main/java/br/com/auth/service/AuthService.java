@@ -5,17 +5,21 @@ import br.com.auth.dto.LoginResponseDTO;
 import br.com.infrastructure.exception.BusinessException;
 import br.com.infrastructure.security.TokenService;
 import br.com.usuario.entity.Usuario;
+import br.com.usuario.repository.UsuarioRepository;
 import br.com.usuario.service.UsuarioIService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+
 @Service
 @RequiredArgsConstructor
 public class AuthService {
 
     private final UsuarioIService usuarioService;
+    private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder; // Para validar a senha no login
     private final TokenService tokenService;
 
@@ -42,8 +46,18 @@ public class AuthService {
         // Gera o Token (Simulado com UUID por enquanto)
         String token = tokenService.generateToken(usuario);
 
+        // Mapeia o Set<PerfilUsuario> para um Set<String> contendo as roles (ex: "ROLE_CLIENTE")
+        java.util.Set<String> perfisString = usuario.getPerfis().stream()
+                .map(perfil -> perfil.getAuthority()) // Retorna "ROLE_ADMIN", "ROLE_CLIENTE", etc.
+                .collect(java.util.stream.Collectors.toSet());
+
+        // Atualizando ultimo login
+        usuario.setUltimoLogin(LocalDateTime.now());
+
+        usuarioRepository.save(usuario);
+
         // Retorna o DTO com Token e talvez o Perfil principal
-        return new LoginResponseDTO(token, usuario.getPessoa().getEmail());
+        return new LoginResponseDTO(token, usuario.getPessoa().getNome(), usuario.getPessoa().getEmail(), perfisString);
     }
 
     /**
